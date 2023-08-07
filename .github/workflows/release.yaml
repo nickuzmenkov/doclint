@@ -1,0 +1,72 @@
+---
+name: release
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  tests:
+    name: "Python ${{ matrix.python-version }}"
+    runs-on: "ubuntu-latest"
+    strategy:
+      matrix:
+        python-version: [ "3.9", "3.10", "3.11" ]
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v3"
+      - name: "Install Python"
+        uses: "actions/setup-python@v4"
+        with:
+          python-version: "${{ matrix.python-version }}"
+      - name: "Install Poetry"
+        uses: "snok/install-poetry@v1"
+      - name: "Install dependencies"
+        run: "poetry install --with test"
+      - name: "Lint"
+        run: "poetry run make lint"
+      - name: "Test"
+        run: "poetry run make test"
+  publish_docs:
+    name: "Publish docs"
+    needs: tests
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v3"
+      - name: "Install Python"
+        uses: "actions/setup-python@v4"
+        with:
+          python-version: "3.11"
+      - name: "Install Poetry"
+        uses: "snok/install-poetry@v1"
+      - name: "Install dependencies"
+        run: "poetry install --with docs"
+      - name: "Publish docs"
+        run: "poetry run mkdocs gh-deploy --force"
+  publish_wheel:
+    name: "Publish wheel"
+    needs:
+      - tests
+      - publish_docs
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v3"
+      - name: "Install Python"
+        uses: "actions/setup-python@v4"
+        with:
+          python-version: "3.11"
+      - name: "Install Poetry"
+        uses: "snok/install-poetry@v1"
+      - name: "Check package version"
+        run: |
+          TAG_VERSION=${GITHUB_REF#refs/tags/}
+          POETRY_VERSION=$(poetry version | awk '{print $2}')
+          if [ "$TAG_VERSION" != "$POETRY_VERSION" ]; then
+            echo "Tag version ($TAG_VERSION) does not match version in pyproject.toml ($POETRY_VERSION)"
+            exit 1
+          fi
+      - name: "Build wheel"
+        run: "poetry build"
+      - name: "Publish wheel"
+        run: poetry publish --username __token__ --password ${{ secrets.PYPI_API_TOKEN }}
