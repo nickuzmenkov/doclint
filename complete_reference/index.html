@@ -1,0 +1,799 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Linter for Numpy style docstrings.">
+      
+      
+      
+        <link rel="canonical" href="https://nickuzmenkov.github.io/numpydoclint/complete_reference/">
+      
+      
+        <link rel="prev" href="../quickstart/">
+      
+      
+        <link rel="next" href="../release_notes/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.5">
+    
+    
+      
+        <title>Complete Reference - Numpydoclint</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0e669242.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.85d0ee34.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../termynal.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#complete-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Numpydoclint" class="md-header__button md-logo" aria-label="Numpydoclint" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Numpydoclint
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Complete Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/nickuzmenkov/numpydoclint" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    numpydoclint
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Numpydoclint" class="md-nav__button md-logo" aria-label="Numpydoclint" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Numpydoclint
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/nickuzmenkov/numpydoclint" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    numpydoclint
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quickstart
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Complete Reference
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Complete Reference
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#command-line-arguments" class="md-nav__link">
+    Command Line  Arguments
+  </a>
+  
+    <nav class="md-nav" aria-label="Command Line Arguments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paths" class="md-nav__link">
+    PATHS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-e-ignore_errors" class="md-nav__link">
+    -e, --ignore_errors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-p-ignore_paths" class="md-nav__link">
+    -p, --ignore_paths
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-h-ignore-hidden" class="md-nav__link">
+    -h, --ignore-hidden
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-f-filename_pattern" class="md-nav__link">
+    -f, --filename_pattern
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-v-verbose" class="md-nav__link">
+    -v, --verbose
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#special-comments" class="md-nav__link">
+    Special Comments
+  </a>
+  
+    <nav class="md-nav" aria-label="Special Comments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#numpydoclint-ignore" class="md-nav__link">
+    numpydoclint: ignore
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numpydoclint-ignore-all" class="md-nav__link">
+    numpydoclint: ignore-all
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-files" class="md-nav__link">
+    Configuration Files
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration Files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration-priority" class="md-nav__link">
+    Configuration Priority
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release_notes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Release Notes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#command-line-arguments" class="md-nav__link">
+    Command Line  Arguments
+  </a>
+  
+    <nav class="md-nav" aria-label="Command Line Arguments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paths" class="md-nav__link">
+    PATHS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-e-ignore_errors" class="md-nav__link">
+    -e, --ignore_errors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-p-ignore_paths" class="md-nav__link">
+    -p, --ignore_paths
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-h-ignore-hidden" class="md-nav__link">
+    -h, --ignore-hidden
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-f-filename_pattern" class="md-nav__link">
+    -f, --filename_pattern
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-v-verbose" class="md-nav__link">
+    -v, --verbose
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#special-comments" class="md-nav__link">
+    Special Comments
+  </a>
+  
+    <nav class="md-nav" aria-label="Special Comments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#numpydoclint-ignore" class="md-nav__link">
+    numpydoclint: ignore
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numpydoclint-ignore-all" class="md-nav__link">
+    numpydoclint: ignore-all
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-files" class="md-nav__link">
+    Configuration Files
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration Files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration-priority" class="md-nav__link">
+    Configuration Priority
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="complete-reference">Complete Reference</h1>
+<p>This guide provides detailed information about all configuration options available in Numpydoclint.</p>
+<h2 id="command-line-arguments">Command Line  Arguments</h2>
+<p>This section lists all the arguments available from the command line.</p>
+<h3 id="paths"><code>PATHS</code></h3>
+<p>Specify one or more paths to be validated. Paths can be directories or modules. If the path is a directory, all modules will be searched <code>filename_pattern</code>. All paths must be in your <code>sys.path</code>. You must have all dependencies installed, because <a href="https://numpydoc.readthedocs.io/en/latest/validation.html"><code>numpydoc.validate</code> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"/></svg></span></a> used under the hood imports your module for validation.</p>
+<h3 id="-e-ignore_errors"><code>-e</code>, <code>--ignore_errors</code></h3>
+<p>Comma-separated set of error codes to ignore (for example, <code>ES01,GL08</code>). See the <a href="https://numpydoc.readthedocs.io/en/latest/validation.html#built-in-validation-checks">Numpydoc documentation <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"/></svg></span></a> for a complete  reference.</p>
+<h3 id="-p-ignore_paths"><code>-p</code>, <code>--ignore_paths</code></h3>
+<p>Comma-separated list of paths to ignore. Can be directories or files. If the path is a directory, all files in that directory will be ignored. If you need to ignore specific patterns in filenames, consider using <code>filename_pattern</code> instead.</p>
+<details class="example">
+<summary>Example</summary>
+<p>Suppose you have the following file structure:</p>
+<div class="highlight"><pre><span></span><code>asgard/
+├── __init__.py
+├── bifrost.py
+├── odin.py
+├── loki.py
+├── valhalla/
+│   ├── __init__.py
+│   ├── einherjar.py
+│   ├── valkyries.py
+│   └── feast.py
+</code></pre></div>
+<p>The following command will only validate the <code>asgard/bifrost.py</code>, <code>asgard/odin.py</code>, as well as both <code>__init__.py</code> modules:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>numpydoclint<span class="w"> </span>asgard<span class="w"> </span>--ignore_paths<span class="o">=</span>asgard/loki.py,asgard/valhalla
+</code></pre></div>
+</details>
+<h3 id="-h-ignore-hidden"><code>-h</code>, <code>--ignore-hidden</code></h3>
+<p>Flag argument that tells Numpydoclint to ignore hidden objects. Hidden objects are objects whose names begin with an underscore (<code>_</code>). Note that this includes all dunder methods of the classes, but not hidden modules. The default is False.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Even without this flag, all class constructors are always ignored.</p>
+</div>
+<details class="example">
+<summary>Example</summary>
+<p>Suppose you have a <code>thor.py</code> module with the following contents:</p>
+<div class="highlight"><span class="filename">thor.py</span><pre><span></span><code><span class="k">def</span> <span class="nf">_battle_cry</span><span class="p">(</span><span class="n">cry</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hear my battle cry: </span><span class="si">{</span><span class="n">cry</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">_Mjolnir</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">Thor</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strength</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">inf</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">strike</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mjolnir</span><span class="p">:</span> <span class="n">_Mjolnir</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Thor strikes with his </span><span class="si">{</span><span class="n">mjolnir</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Running the following command <code>numpydoclint --ignore-hidden</code> flag will skip the hidden <code>_battle_cry</code> function and <code>_Mjolnir</code> class. If there were any dunder methods or objects starting with more than one underscore, they would have been skipped as well.</p>
+</details>
+<h3 id="-f-filename_pattern"><code>-f</code>, <code>--filename_pattern</code></h3>
+<p>Filename pattern to include. Note that this is not a wildcard but a regex pattern, so for example <code>*.py</code> will not compile. The default is any file with a <code>.py</code> extension.</p>
+<details class="example">
+<summary>Example</summary>
+<p>Suppose you have the following file structure:</p>
+<div class="highlight"><pre><span></span><code>asgard/
+├── __init__.py
+├── bifrost.py
+├── odin.py
+├── loki.py
+├── valhalla/
+│   ├── __init__.py
+│   ├── einherjar.py
+│   ├── valkyries.py
+│   └── feast.py
+</code></pre></div>
+<p>The following command will skip both <code>__init__.py</code> modules:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>numpydoclint<span class="w"> </span>asgard<span class="w"> </span>--filename_pattern<span class="o">=</span><span class="s1">&#39;^(?!__).+.py$&#39;</span>
+</code></pre></div>
+<p>While the following command will only match filenames ending in <code>st.py</code>, namely, <code>asgard/bifrost.py</code> and <code>asgard/valhalla/feast.py</code>:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>numpydoclint<span class="w"> </span>asgard<span class="w"> </span>--filename_pattern<span class="o">=</span><span class="s1">&#39;^.*st.py$&#39;</span>
+</code></pre></div>
+</details>
+<h3 id="-v-verbose"><code>-v</code>, <code>--verbose</code></h3>
+<p>Count argument representing the verbosity level of the linter output. Possible values are:</p>
+<ul>
+<li>no flag (default): print only the number of errors found.</li>
+<li><code>-v</code>: show information about the objects and the corresponding error codes.</li>
+<li><code>-vv</code>: also add comments for each error.</li>
+</ul>
+<p>See the <a href="../quickstart/#verbosity">Verbosity</a> section for an interactive example.</p>
+<h2 id="special-comments">Special Comments</h2>
+<p>This section outlines special comments that can be used to ignore certain objects or certain errors only for those objects. See the <a href="../quickstart/#special-comments">Special Comments</a> section in the <a href="../quickstart/">Quickstart</a> guide for a basic example.</p>
+<p>There are basically two types of special comment: regular and recursive. The former applies only to an object itself (e.g. a class or a module), while the latter also applies to all child objects (i.e. all methods in a class, or all functions and classes in a module).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As functions do not have child objects, they can be ignored by both.</p>
+</div>
+<p>To ignore specific errors for these objects only, you can also add a list of codes to ignore to one of the comments to ignore errors for the object, or to ignore them for the object and all child objects. Let's look at some examples.</p>
+<h3 id="numpydoclint-ignore"><code>numpydoclint: ignore</code></h3>
+<p>This tells Numpydoclint to ignore the object or, which is the same, to ignore all errors for the object. To ignore some specific errors for this object instead, you should add a comma-separated list of <a href="https://numpydoc.readthedocs.io/en/latest/validation.html#built-in-validation-checks">error codes <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"/></svg></span></a> after the directive, followed by a space or an equal sign.</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<p>Examples of valid comments are:</p>
+<ul>
+<li><code>numpydoclint: ignore</code> (ignore all errors)</li>
+<li><code>numpydoclint: ignore=RT01</code> (ignore 'No Returns section found' error)</li>
+<li><code>numpydoclint: ignore GL01,ES01</code> (you can use a space instead of an equal sign)</li>
+<li><code>numpydoclint: ignore = EX01, PR01, SS01</code> (you can add extra spaces)</li>
+</ul>
+</div>
+<h3 id="numpydoclint-ignore-all"><code>numpydoclint: ignore-all</code></h3>
+<p>This tells Numpydoclint to ignore the object and all its children: all methods if it's a class, and all classes and functions if it's a module. To ignore some specific errors for this object instead, you should also add a comma-separated list of <a href="https://numpydoc.readthedocs.io/en/latest/validation.html#built-in-validation-checks">error codes <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z"/></svg></span></a> after the directive, followed by a space or an equal sign.</p>
+<p>See the example <a href="#numpydoclint-ignore">above</a> for a list of legal commands.</p>
+<h2 id="configuration-files">Configuration Files</h2>
+<p>Numpydoclint allows flexible configuration using configuration files in addition to command line arguments. Currently supported configuration files are:</p>
+<ul>
+<li><code>setup.cfg</code> (in the current directory)</li>
+<li><code>pyproject.toml</code> (in the current directory)</li>
+</ul>
+<p>Regardless of which config file you use, note that all dashes in all parameters must be replaced with underscores. For example, <code>ignore-paths</code> becomes <code>ignore_paths</code>. </p>
+<p>Here's an example of a <code>pyproject.toml</code> configuration file with all available parameters set:</p>
+<div class="highlight"><span class="filename">pyproject.toml</span><pre><span></span><code><span class="k">[tool.numpydoclint]</span>
+<span class="n">ignore_errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;ES01&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;EX01&quot;</span><span class="p">]</span>
+<span class="n">ignore_paths</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;asgard/loki.py&quot;</span>
+<span class="n">ignore_hidden</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="n">filename_pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^(?!__).+.py$&quot;</span>
+</code></pre></div>
+<h3 id="configuration-priority">Configuration Priority</h3>
+<p>Configuration files and command line arguments are processed in the following order, from highest to lowest:</p>
+<ul>
+<li>Command line arguments: All arguments given directly on the command line have the highest priority. These arguments override any conflicting settings in the configuration files.</li>
+<li><code>pyproject.toml</code>: If there is a <code>pyproject.toml</code> file in the current working directory, and it has a <code>[tool.numpydoclint]</code> section defined, Numpydoclint will use the settings from that section.</li>
+<li><code>setup.cfg</code>: If there is a <code>setup.cfg</code> file in the current working directory, and it has a <code>[numpydoclint]</code> section defined in it, Numpydoclint will use the settings from that section.</li>
+</ul>
+<details class="example">
+<summary>Example</summary>
+<p>Suppose you have the following configuration files in your current project directory:</p>
+<div class="highlight"><span class="filename">pyproject.toml</span><pre><span></span><code><span class="k">[tool.numpydoclint]</span>
+<span class="n">ignore_errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;ES01&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;EX01&quot;</span><span class="p">]</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">setup.cfg</span><pre><span></span><code><span class="k">[numpydoclint]</span>
+<span class="na">ignore_errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">RT01, GL08</span>
+<span class="na">filename_pattern</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;^(?!__).+.py$&#39;</span>
+</code></pre></div>
+<p>Running <code>numpydoclint asgard/</code> will use the filename pattern specified in the <code>setup.cfg</code>, while the ignored errors from <code>setup.cfg</code> will be overridden by the values in the <code>pyproject.toml</code> file.</p>
+</details>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "content.code.copy", "content.code.annotate", "content.code.select"], "search": "../assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.78eede0e.min.js"></script>
+      
+        <script src="../termynal.js"></script>
+      
+    
+  </body>
+</html>
