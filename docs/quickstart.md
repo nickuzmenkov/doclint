@@ -10,7 +10,7 @@ Numpydoclint makes it easy to validate all objects in a package or a series of p
 
 ```bash
 $ numpydoclint -vv asgard midgard
-asgard/loki.py:12 in function loki.mischief:
+asgard/loki.py:12 in function asgard.loki.mischief:
     GL03 Double line break found
 asgard/odin.py:10 in type asgard.odin.Allfather:
     SA04 Missing description for See Also 'Yggdrasil' reference
@@ -48,11 +48,11 @@ By default, Numpydoclint only prints the number of errors found. You can also se
 $ numpydoclint asgard
 Errors found in 3 out of 6 objects checked.
 $ numpydoclint asgard -v
-asgard/loki.py:12 in function loki.mischief: GL03
+asgard/loki.py:12 in function asgard.loki.mischief: GL03
 asgard/odin.py:10 in type asgard.odin.Allfather: SA04
 Errors found in 3 out of 6 objects checked.
 $ numpydoclint asgard -vv
-asgard/loki.py:12 in function loki.mischief:
+asgard/loki.py:12 in function asgard.loki.mischief:
     GL03 Double line break found
 asgard/odin.py:10 in type asgard.odin.Allfather:
     SA04 Missing description for See Also 'Yggdrasil' reference

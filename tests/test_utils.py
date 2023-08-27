@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from numpydoclint.utils import get_first, parse_pyproject_toml, parse_set, parse_setup_cfg
+from numpydoclint.utils import get_first, parse_bool, parse_pyproject_toml, parse_set, parse_setup_cfg
 from tests.utils import get_log_records, get_name
 
 
@@ -99,6 +99,35 @@ class TestParseSet:
         assert parse_set(str_or_list=["", " "]) == result
 
 
+class TestParseBool:
+    """Test parse bool."""
+
+    def test_empty_string(self):
+        """Test parse empty string."""
+        assert parse_bool("") is False
+
+    def test_whitespace_string(self):
+        """Test parse string containing only the whitespace."""
+        assert parse_bool(" \n ") is False
+
+    def test_bool(self):
+        """Test parse boolean."""
+        assert parse_bool(True) is True
+        assert parse_bool(False) is False
+
+    def test_false(self):
+        """Test parse strings that evaluate to False."""
+        assert parse_bool("False") is False
+        assert parse_bool("false      ") is False
+        assert parse_bool("\n    False") is False
+
+    def test_true(self):
+        """Test parse strings that evaluate to True."""
+        assert parse_bool("True") is True
+        assert parse_bool("true      ") is True
+        assert parse_bool("\n    True") is True
+
+
 class TestParseSetupCfg:
     """Test parse setup.cfg."""
 
@@ -150,17 +179,16 @@ class TestParseSetupCfg:
         assert all(x == "" for x in config.values())
         assert not get_log_records(caplog=caplog, level=logging.DEBUG, func_name="parse_setup_cfg")
 
-    def test_parse(self, tmp_path: Path, caplog: pytest.LogCaptureFixture):
-        """Test parse configuration."""
+    def test_some_keys_missing(self, tmp_path: Path, caplog: pytest.LogCaptureFixture):
+        """Test parse configuration with some keys missing."""
+        ignore_paths = [get_name() for _ in range(5)]
+
         with open(Path(tmp_path, "setup.cfg"), "w") as file:
             file.write(
                 textwrap.dedent(
                     f"""
                     [numpydoclint]
-                    ignore_errors = 
-                        ES01
-                    ignore_paths = my_module.py
-                    filename_pattern = 
+                    ignore_paths = {ignore_paths}
                     """
                 )
             )
@@ -168,9 +196,39 @@ class TestParseSetupCfg:
         config = parse_setup_cfg(config_dir=str(tmp_path))
 
         assert config
-        assert parse_set(config["ignore_errors"]) == {"ES01"}
-        assert parse_set(config["ignore_paths"]) == {"my_module.py"}
+        assert config["ignore_errors"] == ""
+        assert config["ignore_paths"] == str(ignore_paths)
+        assert config["ignore_hidden"] == ""
         assert config["filename_pattern"] == ""
+        assert not get_log_records(caplog=caplog, level=logging.DEBUG, func_name="parse_setup_cfg")
+
+    def test_all_keys_present(self, tmp_path: Path, caplog: pytest.LogCaptureFixture):
+        """Test parse configuration with all keys present."""
+        ignore_errors = ",".join(get_name() for _ in range(5))
+        ignore_paths = ",".join(get_name() for _ in range(5))
+        ignore_hidden = "true"
+        filename_pattern = get_name()
+
+        with open(Path(tmp_path, "setup.cfg"), "w") as file:
+            file.write(
+                textwrap.dedent(
+                    f"""
+                    [numpydoclint]
+                    ignore_errors = {ignore_errors}
+                    ignore_paths = {ignore_paths}
+                    ignore_hidden = {ignore_hidden}
+                    filename_pattern = {filename_pattern}
+                    """
+                )
+            )
+
+        config = parse_setup_cfg(config_dir=str(tmp_path))
+
+        assert config
+        assert config["ignore_errors"] == ignore_errors
+        assert config["ignore_paths"] == ignore_paths
+        assert config["ignore_hidden"] == ignore_hidden
+        assert config["filename_pattern"] == filename_pattern
         assert not get_log_records(caplog=caplog, level=logging.DEBUG, func_name="parse_setup_cfg")
 
 
@@ -225,15 +283,16 @@ class TestParsePyprojectToml:
         assert all(x == "" for x in config.values())
         assert not get_log_records(caplog=caplog, level=logging.DEBUG, func_name="parse_pyproject_toml")
 
-    def test_parse(self, tmp_path: Path, caplog: pytest.LogCaptureFixture):
-        """Test parse configuration."""
+    def test_some_keys_missing(self, tmp_path: Path, caplog: pytest.LogCaptureFixture):
+        """Test parse configuration with some keys missing."""
+        ignore_paths = [get_name() for _ in range(5)]
+
         with open(Path(tmp_path, "pyproject.toml"), "w") as file:
             file.write(
                 textwrap.dedent(
                     f"""
                     [tool.numpydoclint]
-                    ignore_errors = ["ES01"]
-                    ignore_paths = "my_module.py"
+                    ignore_paths = {ignore_paths}
                     """
                 )
             )
@@ -241,7 +300,36 @@ class TestParsePyprojectToml:
         config = parse_pyproject_toml(config_dir=str(tmp_path))
 
         assert config
-        assert parse_set(config["ignore_errors"]) == {"ES01"}
-        assert parse_set(config["ignore_paths"]) == {"my_module.py"}
+        assert config["ignore_errors"] == ""
+        assert config["ignore_paths"] == ignore_paths
+        assert config["ignore_hidden"] == ""
         assert config["filename_pattern"] == ""
+        assert not get_log_records(caplog=caplog, level=logging.DEBUG, func_name="parse_pyproject_toml")
+
+    def test_all_keys_present(self, tmp_path: Path, caplog: pytest.LogCaptureFixture):
+        """Test parse configuration with all keys present."""
+        ignore_errors = [get_name() for _ in range(5)]
+        ignore_paths = [get_name() for _ in range(5)]
+        filename_pattern = get_name()
+
+        with open(Path(tmp_path, "pyproject.toml"), "w") as file:
+            file.write(
+                textwrap.dedent(
+                    f"""
+                    [tool.numpydoclint]
+                    ignore_errors = {ignore_errors}
+                    ignore_paths = {ignore_paths}
+                    ignore_hidden = true
+                    filename_pattern = "{filename_pattern}"
+                    """
+                )
+            )
+
+        config = parse_pyproject_toml(config_dir=str(tmp_path))
+
+        assert config
+        assert config["ignore_errors"] == ignore_errors
+        assert config["ignore_paths"] == ignore_paths
+        assert config["ignore_hidden"] is True
+        assert config["filename_pattern"] == filename_pattern
         assert not get_log_records(caplog=caplog, level=logging.DEBUG, func_name="parse_pyproject_toml")

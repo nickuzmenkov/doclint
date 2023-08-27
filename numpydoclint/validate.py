@@ -18,6 +18,7 @@ def validate(
     paths: Union[StrOrPath, Iterable[StrOrPath]],
     ignore_errors: Optional[Set[str]] = None,
     ignore_paths: Optional[Set[StrOrPath]] = None,
+    ignore_hidden: bool = False,
     filename_pattern: Optional[str] = None,
 ) -> Dict[str, Dict[str, Any]]:
     """Recursively validate docstrings of functions, classes, and methods under given paths.
@@ -36,6 +37,9 @@ def validate(
     ignore_paths : set of str or Path, optional
         Set of paths to ignore. Can be directories or files. If the path is a directory, all files in that directory will be ignored.
         If you need to ignore specific patterns in filenames, consider using `filename_pattern` instead.
+    ignore_hidden : bool, default False
+        Whether to ignore hidden objects. Hidden objects are objects whose names begin with an underscore (`_`). Note that this includes all
+        dunder methods of the classes, but not hidden modules. The default is False.
     filename_pattern : str, optional
         Filename pattern to include. Note that this is not a wildcard but a regex pattern, so for example `*.py` will not compile.
         The default is any file with a `.py` extension.
@@ -59,8 +63,9 @@ def validate(
 
     introspector = Introspector(
         ignore_errors=ignore_errors,
-        filename_pattern=filename_pattern,
         ignore_paths=processed_ignore_paths,
+        ignore_hidden=ignore_hidden,
+        filename_pattern=filename_pattern,
     )
     object_infos = introspector(paths=processed_paths)
 

@@ -7,7 +7,7 @@ import pytest
 
 from numpydoclint.introspection.filters import FileFilter, FilterInfo, ObjectFilter
 from numpydoclint.introspection.object_infos import ClassInfo, FunctionInfo, ModuleInfo
-from tests.utils import get_name
+from tests.utils import get_name, get_number
 
 
 class TestFileFilter:
@@ -287,6 +287,82 @@ class TestObjectFilter:
 
             assert class_info_1.ignore_errors == error_codes_1
             assert class_info_2.ignore_errors == error_codes_2
+
+    class TestIgnored:
+        def test_empty_filter_info(self, object_filter: ObjectFilter, empty_filter_info: FilterInfo):
+            function_info = FunctionInfo(name=get_name(), path=Path(get_name()), lineno=get_number())
+            assert not object_filter._ignored(object_info=function_info, filter_info=empty_filter_info)
+
+        def test_function_without_ignore_hidden(self, object_filter: ObjectFilter):
+            """Test that the function infos are correctly ignored when the `ignore_hidden` flag is False."""
+            lineno = get_number()
+            function_info = FunctionInfo(name=get_name(), path=Path(get_name()), lineno=lineno)
+
+            # function is not in the filter info
+            filter_info = FilterInfo(ignore_objects={-1}, r_ignore_objects={-2})
+            assert not object_filter._ignored(object_info=function_info, filter_info=filter_info)
+
+            # function is in the ignored objects
+            filter_info = FilterInfo(ignore_objects={lineno}, r_ignore_objects={-2})
+            assert object_filter._ignored(object_info=function_info, filter_info=filter_info)
+
+            # function is in the recursively ignored objects
+            filter_info = FilterInfo(ignore_objects={-1}, r_ignore_objects={lineno})
+            assert object_filter._ignored(object_info=function_info, filter_info=filter_info)
+
+        def test_class_without_ignore_hidden(self, object_filter: ObjectFilter):
+            """Test that the class infos are correctly ignored when the `ignore_hidden` flag is False."""
+            lineno = get_number()
+            class_info = ClassInfo(name=get_name(), path=Path(get_name()), lineno=lineno)
+
+            # class info is not in the filter info
+            filter_info = FilterInfo(ignore_objects={-1}, r_ignore_objects={-2})
+            assert not object_filter._ignored(object_info=class_info, filter_info=filter_info)
+
+            # class info is in the ignored objects
+            filter_info = FilterInfo(ignore_objects={lineno}, r_ignore_objects={-2})
+            assert not object_filter._ignored(object_info=class_info, filter_info=filter_info)
+
+            # class info is in the recursively ignored objects
+            filter_info = FilterInfo(ignore_objects={-1}, r_ignore_objects={lineno})
+            assert object_filter._ignored(object_info=class_info, filter_info=filter_info)
+
+        def test_function_with_ignore_hidden(self, empty_filter_info: FilterInfo):
+            """Test that the function infos are correctly ignored when the `ignore_hidden` flag is True."""
+            object_filter = ObjectFilter(directive=get_name(), r_directive=get_name(), ignore_hidden=True)
+
+            # the object does not start with an underscore
+            function_info = FunctionInfo(name=get_name(), path=Path(get_name()), lineno=get_number())
+            assert not object_filter._ignored(object_info=function_info, filter_info=empty_filter_info)
+
+            # the object starts with a single underscore
+            function_info = FunctionInfo(name=get_name(prefix="_"), path=Path(get_name()), lineno=get_number())
+            assert object_filter._ignored(object_info=function_info, filter_info=empty_filter_info)
+
+            # the object starts with a multiple underscores
+            function_info = FunctionInfo(name=get_name(prefix="___"), path=Path(get_name()), lineno=get_number())
+            assert object_filter._ignored(object_info=function_info, filter_info=empty_filter_info)
+
+        def test_class_with_ignore_hidden(self, empty_filter_info: FilterInfo):
+            """Test that the class infos are correctly ignored when the `ignore_hidden` flag is True."""
+            object_filter = ObjectFilter(directive=get_name(), r_directive=get_name(), ignore_hidden=True)
+
+            # class info does not start with an underscore
+            class_info = ClassInfo(name=get_name(), path=Path(get_name()), lineno=get_number())
+            assert not object_filter._ignored(object_info=class_info, filter_info=empty_filter_info)
+
+            # class info starts with a single underscore
+            class_info = ClassInfo(name=get_name(prefix="_"), path=Path(get_name()), lineno=get_number())
+            assert object_filter._ignored(object_info=class_info, filter_info=empty_filter_info)
+
+            # class info starts with a multiple underscores
+            class_info = ClassInfo(name=get_name(prefix="___"), path=Path(get_name()), lineno=get_number())
+            assert object_filter._ignored(object_info=class_info, filter_info=empty_filter_info)
+
+    def test_init_invalid(self):
+        """Test that the constructor raises error if the parameter combination is invalid."""
+        with pytest.raises(ValueError, match="Ignoring hidden objects while preserving class constructors is not allowed."):
+            ObjectFilter(directive=get_name(), r_directive=get_name(), ignore_constructor=False, ignore_hidden=True)
 
     def test_init_with_ignore_errors(self, tmp_path: Path):
         """Test that ignore errors were passed to the constructor are recursively ignored everywhere."""

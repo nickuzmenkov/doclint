@@ -229,15 +229,15 @@ class TestIntrospector:
 
     def test_empty_paths(self, introspector: Introspector):
         """Test call with empty paths."""
-        assert introspector(paths=[]) == []
+        assert introspector(paths=set()) == []
 
     def test_ignore_all_paths(self, tmp_path: Path):
         """Test ignore all paths the introspector is called with."""
         module = Path(tmp_path, get_name(extension=".py"))
         module.touch()
 
-        introspector = Introspector(ignore_paths=[module])
-        assert introspector(paths=[module]) == []
+        introspector = Introspector(ignore_paths={module})
+        assert introspector(paths={module}) == []
 
     def test_call(self, introspector: Introspector, tmp_path: Path):
         """Test call with both module and package paths.
@@ -283,7 +283,7 @@ class TestIntrospector:
             )
 
         with mock.patch.object(sys, "path", [tmp_path]):
-            object_infos = introspector(paths=[module_1, package_1, package_2])
+            object_infos = introspector(paths={module_1, package_1, package_2})
 
         # module_1
         module_info = [x for x in object_infos if isinstance(x, ModuleInfo) and (x.name == module_1.stem)][0]

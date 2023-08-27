@@ -25,18 +25,25 @@ class Introspector:
     ignore_paths : set of str or Path, optional
         Set of paths to ignore. Can be directories or files. If the path is a directory, all files in that directory will be ignored.
         If you need to ignore specific patterns in filenames, consider using `filename_pattern` instead.
+    ignore_hidden : bool, default False
+        Whether to ignore hidden objects. Hidden objects are objects whose names begin with an underscore (`_`). Note that this includes all
+        dunder methods of the classes, but not hidden modules. The default is False.
     filename_pattern : str, optional
         Filename pattern to include. Note that this is not a wildcard but a regex pattern, so for example `*.py` will not compile.
         The default is any file with a `.py` extension.
     """
 
     def __init__(
-        self, ignore_errors: Optional[Set[str]] = None, ignore_paths: Optional[Set[Path]] = None, filename_pattern: Optional[str] = None
+        self,
+        ignore_errors: Optional[Set[str]] = None,
+        ignore_paths: Optional[Set[Path]] = None,
+        ignore_hidden: bool = False,
+        filename_pattern: Optional[str] = None,
     ) -> None:
         self._file_introspector = FileIntrospector()
         self._file_filter = FileFilter(filename_pattern=filename_pattern, ignore_paths=ignore_paths)
         self._object_introspector = ObjectIntrospector()
-        self._object_filter = ObjectFilter(ignore_errors=ignore_errors)
+        self._object_filter = ObjectFilter(ignore_errors=ignore_errors, ignore_hidden=ignore_hidden)
 
     def __call__(self, paths: Set[Path]) -> Sequence[ObjectInfo]:
         """Perform introspection on the given paths.

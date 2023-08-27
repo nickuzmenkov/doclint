@@ -4,7 +4,7 @@ Numpydoclint is a linter for [Numpy style][numpy-style] docstrings.
 
 ```
 $ numpydoclint -vv asgard midgard/thor.py
-asgard/loki.py:12 in function loki.mischief:
+asgard/loki.py:12 in function asgard.loki.mischief:
     GL03 Double line break found
 asgard/odin.py:10 in type asgard.odin.Allfather:
     SA04 Missing description for See Also 'Yggdrasil' reference
