@@ -11,7 +11,7 @@ import click
 
 import numpydoclint.validate
 from numpydoclint.constants import __version__
-from numpydoclint.utils import get_first, get_logger, parse_pyproject_toml, parse_set, parse_setup_cfg
+from numpydoclint.utils import get_first, get_logger, parse_bool, parse_pyproject_toml, parse_set, parse_setup_cfg
 
 logger = get_logger()
 
@@ -45,6 +45,16 @@ logger = get_logger()
     will be ignored. If you need to ignore specific patterns in filenames, consider using `filename_pattern` instead.""",
 )
 @click.option(
+    "-h",
+    "--ignore-hidden",
+    "ignore_hidden",
+    is_flag=True,
+    default=False,
+    show_default=False,
+    help="""Whether to ignore hidden objects. Hidden objects are objects whose names begin with an underscore (`_`). Note that this includes
+    all dunder methods of the classes, but not hidden modules. The default is False.""",
+)
+@click.option(
     "-f",
     "--filename-pattern",
     "filename_pattern",
@@ -72,6 +82,7 @@ def validate(  # numpydoclint: ignore
     paths: Tuple[str, ...],
     ignore_errors_str: str,
     ignore_paths_str: str,
+    ignore_hidden: bool,
     filename_pattern: str,
     verbose: int,
 ) -> None:
@@ -94,6 +105,9 @@ def validate(  # numpydoclint: ignore
     filename_pattern : str
         Filename pattern to include. Note that this is not a wildcard but a regex pattern, so for example `*.py` will not compile.
         The default is any file with a `.py` extension.
+    ignore_hidden : bool, default False
+        Whether to ignore hidden objects. Hidden objects are objects whose names begin with an underscore (`_`). Note that this includes all
+        dunder methods of the classes, but not hidden modules. The default is False.
     verbose : int
         Count argument representing the verbosity level of the linter output. Possible values are:
 
@@ -121,6 +135,9 @@ def validate(  # numpydoclint: ignore
             get_first((ignore_paths_str, pyproject_toml_config["ignore_paths"], setup_cfg_config["ignore_paths"]), default="")
         )
     }
+    ignore_hidden = parse_bool(
+        get_first((ignore_hidden, pyproject_toml_config["ignore_hidden"], setup_cfg_config["ignore_hidden"]), default="")
+    )
     filename_pattern = get_first(
         (filename_pattern, pyproject_toml_config["filename_pattern"], setup_cfg_config["filename_pattern"]), default=None
     )
@@ -130,6 +147,7 @@ def validate(  # numpydoclint: ignore
         ignore_errors=ignore_errors,
         ignore_paths=ignore_paths,
         filename_pattern=filename_pattern,
+        ignore_hidden=ignore_hidden,
     )
 
     if report and any(x["errors"] for x in report.values()):

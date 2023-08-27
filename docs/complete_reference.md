@@ -41,6 +41,35 @@ Comma-separated list of paths to ignore. Can be directories or files. If the pat
     $ numpydoclint asgard --ignore_paths=asgard/loki.py,asgard/valhalla
     ```
 
+### `-h`, `--ignore-hidden`
+
+Flag argument that tells Numpydoclint to ignore hidden objects. Hidden objects are objects whose names begin with an underscore (`_`). Note that this includes all dunder methods of the classes, but not hidden modules. The default is False.
+
+!!! note
+
+    Even without this flag, all class constructors are always ignored.
+
+??? example
+
+    Suppose you have a `thor.py` module with the following contents:
+
+    ``` py title="thor.py"
+    def _battle_cry(cry: str) -> None:
+        print(f"Hear my battle cry: {cry}!")
+
+    class _Mjolnir:
+        pass
+    
+    class Thor:
+        def __init__(self) -> None:
+            self.strength = float(inf)
+
+        def strike(self, mjolnir: _Mjolnir) -> None:
+            print(f"Thor strikes with his {mjolnir}!")
+    ```
+    
+    Running the following command `numpydoclint --ignore-hidden` flag will skip the hidden `_battle_cry` function and `_Mjolnir` class. If there were any dunder methods or objects starting with more than one underscore, they would have been skipped as well.
+
 ### `-f`, `--filename_pattern`
 
 Filename pattern to include. Note that this is not a wildcard but a regex pattern, so for example `*.py` will not compile. The default is any file with a `.py` extension.
@@ -117,7 +146,26 @@ See the example [above](#numpydoclint-ignore) for a list of legal commands.
 
 ## Configuration Files
 
-Numpydoclint allows flexible configuration via the command line and configuration files. These are processed in a certain order, from highest to lowest:
+Numpydoclint allows flexible configuration using configuration files in addition to command line arguments. Currently supported configuration files are:
+
+- `setup.cfg` (in the current directory)
+- `pyproject.toml` (in the current directory)
+
+Regardless of which config file you use, note that all dashes in all parameters must be replaced with underscores. For example, `ignore-paths` becomes `ignore_paths`. 
+
+Here's an example of a `pyproject.toml` configuration file with all available parameters set:
+
+```toml title="pyproject.toml"
+[tool.numpydoclint]
+ignore_errors = ["ES01", "EX01"]
+ignore_paths = "asgard/loki.py"
+ignore_hidden = true
+filename_pattern = "^(?!__).+.py$"
+```
+
+### Configuration Priority
+
+Configuration files and command line arguments are processed in the following order, from highest to lowest:
 
 - Command line arguments: All arguments given directly on the command line have the highest priority. These arguments override any conflicting settings in the configuration files.
 - `pyproject.toml`: If there is a `pyproject.toml` file in the current working directory, and it has a `[tool.numpydoclint]` section defined, Numpydoclint will use the settings from that section.
@@ -139,6 +187,9 @@ Numpydoclint allows flexible configuration via the command line and configuratio
     ```
     
     Running `numpydoclint asgard/` will use the filename pattern specified in the `setup.cfg`, while the ignored errors from `setup.cfg` will be overridden by the values in the `pyproject.toml` file.
+
+
+
 
 [numpydoc-validate]: https://numpydoc.readthedocs.io/en/latest/validation.html
 [error-codes]: https://numpydoc.readthedocs.io/en/latest/validation.html#built-in-validation-checks

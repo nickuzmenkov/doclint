@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import DefaultDict, Optional, Set, Union
 
 from numpydoclint.constants import DEFAULT_FILENAME_PATTERN, IGNORE_DIRECTIVE, R_IGNORE_DIRECTIVE
-from numpydoclint.introspection.object_infos import ClassInfo, ModuleInfo
+from numpydoclint.introspection.object_infos import ClassInfo, FunctionInfo, ModuleInfo
 from numpydoclint.utils import parse_set
 
 
@@ -136,7 +136,15 @@ class ObjectFilter:
     ignore_errors : set of str, optional
         Set of errors to propagate to all objects regardless of the comment directives.
     ignore_constructor : bool, default True
-        Whether filter the class constructor (`__init__`). Default is True.
+        Whether to ignore class constructors. Default is True.
+    ignore_hidden : bool, default False
+        Whether to ignore hidden objects. Hidden objects are objects whose names begin with an underscore (`_`). Note that this includes all
+        dunder methods of the classes, but not hidden modules. The default is False.
+
+    Raises
+    ------
+    ValueError
+        If `ignore_constructor` is False and `ignore_hidden` is True.
     """
 
     def __init__(
@@ -145,11 +153,15 @@ class ObjectFilter:
         r_directive: str = R_IGNORE_DIRECTIVE,
         ignore_errors: Optional[Set[str]] = None,
         ignore_constructor: bool = True,
+        ignore_hidden: bool = False,
     ) -> None:
         self.ignore_errors = ignore_errors or set()
         self.directive = re.compile(directive)
         self.r_directive = re.compile(r_directive)
+        if not ignore_constructor and ignore_hidden:
+            raise ValueError("Ignoring hidden objects while preserving class constructors is not allowed.")
         self.ignore_constructor = ignore_constructor
+        self.ignore_hidden = ignore_hidden
 
     def __call__(self, path: Path, module_info: ModuleInfo) -> ModuleInfo:
         """Filter objects.
@@ -261,11 +273,7 @@ class ObjectFilter:
         filter_info : FilterInfo
             Filter info.
         """
-        parent_info.function_infos = [
-            x
-            for x in parent_info.function_infos
-            if (x.lineno not in filter_info.r_ignore_objects) and (x.lineno not in filter_info.ignore_objects)
-        ]
+        parent_info.function_infos = [x for x in parent_info.function_infos if not self._ignored(x, filter_info=filter_info)]
         if isinstance(parent_info, ClassInfo) and self.ignore_constructor:
             parent_info.function_infos = [x for x in parent_info.function_infos if x.name.split(".")[-1] != "__init__"]
         for function_info in parent_info.function_infos:
@@ -284,7 +292,7 @@ class ObjectFilter:
         filter_info : FilterInfo
             Filter info.
         """
-        module_info.class_infos = [x for x in module_info.class_infos if x.lineno not in filter_info.r_ignore_objects]
+        module_info.class_infos = [x for x in module_info.class_infos if not self._ignored(x, filter_info=filter_info)]
 
         for class_info in module_info.class_infos:
             self._filter_function_infos(parent_info=class_info, filter_info=filter_info)
@@ -293,3 +301,26 @@ class ObjectFilter:
                 class_info.ignore_self = True
             class_info.ignore_errors.update(filter_info.ignore_errors[class_info.lineno])
             class_info.ignore_errors_recursive(ignore_errors=filter_info.r_ignore_errors[class_info.lineno])
+
+    def _ignored(self, object_info: Union[FunctionInfo, ClassInfo], filter_info: FilterInfo) -> bool:
+        """Return whether the object should be ignored.
+
+        Class info is only ignored if it is in the recursively ignored objects.
+
+        Parameters
+        ----------
+        object_info : FunctionInfo or ClassInfo
+            Object info.
+        filter_info : FilterInfo
+            Filter info.
+
+        Returns
+        -------
+        bool
+            Whether the object should be ignored.
+        """
+        return (
+            object_info.lineno in filter_info.r_ignore_objects
+            or (isinstance(object_info, FunctionInfo) and object_info.lineno in filter_info.ignore_objects)
+            or (self.ignore_hidden and object_info.name.split(".")[-1].startswith("_"))
+        )

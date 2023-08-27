@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "numpydoc-linter"
-version = "0.2.0"
+version = "0.3.0"
 description = "Numpydoclint is a linter for Numpy style docstrings."
 license = "MIT"
 authors = ["Nick Kuzmenkov <nickuzmenkov@yahoo.com>"]
